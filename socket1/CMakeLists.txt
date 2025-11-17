@@ -12,7 +12,12 @@ set(SOURCES
     "server/server.cpp"
 )
 
+set(SOURCES2
+    "client/client.cpp"
+)
+
 set(TARGET ${PROJECT_NAME}-${CMAKE_SYSTEM_NAME})
 
 # 添加可执行文件, 使用配置好的 "SOURCES" 变量
 add_executable(${TARGET} ${SOURCES})
+add_executable(clientOne ${SOURCES2})
