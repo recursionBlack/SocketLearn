@@ -7,12 +7,18 @@ project(EasyServer VERSION 0.1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# 包含当前项目的顶层目录
+include_directories(./)
+
 # 设置通用源文件
 set(SOURCES
+    "socketClass/socket.cpp"
     "server/server.cpp"
+
 )
 
 set(SOURCES2
+    "socketClass/socket.cpp"
     "client/client.cpp"
 )
 
