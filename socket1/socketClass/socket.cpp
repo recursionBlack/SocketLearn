@@ -128,3 +128,90 @@ void Socket::close()
         m_sockFd = 0;
     }
 }
+
+bool Socket::set_non_blocking()
+{
+    // 将阻塞io模型，设置为非阻塞io模型
+    // 获取阻塞标志位状态，F_GETFL = get flag
+    int flag = fcntl(m_sockFd, F_GETFL, 0);
+    if (flag < 0)
+    {
+        printf("socket set_non_blocking error: errno =%d, errmsg=%s", errno, strerror(errno));
+        return false;
+    }
+    flag |= O_NONBLOCK;     // 将标记设置为非阻塞的
+    // 设置阻塞标志位F_SETFL = set flag
+    if (fcntl(m_sockFd, F_SETFL, flag) < 0)
+    {
+        printf("socket set_non_blocking error: errno=%d, errmsg=%s", errno, strerror(errno));
+        return true;
+    }
+
+    return true;
+}
+
+bool Socket::set_send_buffer(int size)
+{
+    int buff_size = size;
+    // 设置发送缓冲区大小
+    if(setsockopt(m_sockFd, SOL_SOCKET, SO_SNDBUF, &buff_size, sizeof(buff_size)) < 0)
+    {
+        printf("socket set_send_buffer error: errno=%d, errmsg=%s", errno, strerror(errno));
+        return false;
+    }
+    
+    return true;
+}
+
+bool Socket::set_recv_buffer(int size)
+{
+    int buff_size = size;
+    // 设置接收缓冲区大小
+    if(setsockopt(m_sockFd, SOL_SOCKET, SO_RCVBUF, &buff_size, sizeof(buff_size)) < 0)
+    {
+        printf("socket set_recv_buffer error: errno=%d, errmsg=%s", errno, strerror(errno));
+        return false;
+    }
+
+    return false;
+}
+
+bool Socket::set_linger(bool active, int secondes)
+{
+    struct linger l;
+    std::memset(&l, 0, sizeof(l));
+    l.l_onoff = active ? 1:0;
+    if (setsockopt(m_sockFd, SOL_SOCKET, SO_LINGER, &l, sizeof(l)) < 0)
+    {
+        printf("socket set_so_linger error: errno=%d, errmsg=%s", errno, strerror(errno));
+        return false;
+    }
+
+    return true;
+}
+
+bool Socket::set_keepalive()
+{
+    // 设置是否开启心跳包功能
+    int flag = 1;
+    if (setsockopt(m_sockFd, SOL_SOCKET, SO_KEEPALIVE, &flag, sizeof(flag)) < 0)
+    {
+        printf("socket set_keepalive error: errno=%d, errmsg=%s", errno, strerror(errno));
+        return false;
+    }
+
+    return true;
+}
+
+bool Socket::set_reuseaddr()
+{
+    int flag = 1;
+    // 设置地址重复利用，非常有用，一般都会打开
+    if (setsockopt(m_sockFd, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof(flag)) < 0)
+    {
+        printf("socket set_reuseaddr error: errno=%d, errmsg=%s", errno, strerror(errno));
+        return false;
+    }
+
+    return true;
+}
