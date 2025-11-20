@@ -16,7 +16,7 @@ namespace yazi
             public:
                 Socket();
                 explicit Socket(int socketFd);
-                ~Socket();
+                virtual ~Socket();
 
                 bool bind(const std::string& ip, int port);
                 bool listen(int backlog);

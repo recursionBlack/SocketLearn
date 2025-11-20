@@ -1,18 +1,12 @@
 #include <iostream>
 
-#include "socketClass/socket.h"
+#include "socketClass/server_socket.h"
 using namespace yazi::socket;
 
 int main()
 {
     // 1.创建socket,获得一个文件描述符file distrustion, 被成为“监听套接字”
-    Socket server;
-
-    // 2. 绑定socket 到一个ip和端口port
-    server.bind("127.0.0.1", 8080);
-
-    // 3.监听客户端的请求
-    server.listen(1024);
+    ServeSocket server("127.0.0.1", 8080);
     
     // 4.接收客户端连接
     while(true)
@@ -36,9 +30,6 @@ int main()
         client.send(buf, len);
 
     }
-
-    // 7.关闭socket,参数为服务端的监听套接字
-    server.close();
 
     return 0;
 }

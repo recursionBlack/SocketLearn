@@ -19,12 +19,14 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0")  # C++
 # 设置通用源文件
 set(SOURCES
     "socketClass/socket.cpp"
+    "socketClass/server_socket.cpp"
     "server/server.cpp"
 
 )
 
 set(SOURCES2
     "socketClass/socket.cpp"
+    "socketClass/client_socket.cpp"
     "client/client.cpp"
 )
 
